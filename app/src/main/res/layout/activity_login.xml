@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".LoginActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/img_Login"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:scaleType="fitCenter"
+                android:src="@drawable/login_photo" />
+
+            <EditText
+
+                android:id="@+id/edt_Login_Email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+
+                android:layout_below="@+id/img_Login"
+                android:hint="Email............"
+                android:drawableStart="@drawable/email"
+                android:padding="4dp"
+
+                android:background="@drawable/inputs"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="17dp"
+                android:layout_marginRight="17dp"
+                android:textSize="19sp"
+                android:inputType="textEmailAddress"
+                />
+            <EditText
+                android:id="@+id/edt_Login_Password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:inputType="textPassword"
+                android:layout_below="@+id/edt_Login_Email"
+                android:hint="............."
+                android:drawableStart="@drawable/password"
+                android:padding="4dp"
+                android:background="@drawable/inputs"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="17dp"
+                android:layout_marginRight="17dp"
+                android:textSize="19sp"
+
+                />
+            <TextView
+                android:id="@+id/tv_Forget_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/edt_Login_Password"
+                android:text="Forget Password?"
+                android:textAlignment="textEnd"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="25dp"
+                android:layout_marginRight="25dp"
+                android:textSize="17sp"
+                android:textStyle="bold"
+                android:textColor="@color/common_google_signin_btn_text_dark_focused"
+                />
+            <Button
+                android:id="@+id/btn_Login"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_Forget_password"
+                android:padding="4dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="19dp"
+                android:layout_marginRight="19dp"
+                android:textSize="24sp"
+                android:textAllCaps="true"
+                android:text="Login"
+                android:textStyle="bold"
+                android:textAlignment="center"
+                android:background="@drawable/buttons"
+                android:textColor="@android:color/background_light"
+
+                />
+
+            <TextView
+                android:id="@+id/tv_NewAccount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/btn_Login"
+                android:text="Need new Account?"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="25dp"
+                android:layout_marginRight="25dp"
+                android:textSize="17sp"
+                android:textStyle="bold"
+                android:textColor="@color/common_google_signin_btn_text_dark_focused"
+                android:textAlignment="center"
+                />
+            <TextView
+                android:id="@+id/tv_Login_Phone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/tv_NewAccount"
+                android:text="or Login using your Phone"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="4dp"
+                android:layout_marginLeft="25dp"
+                android:layout_marginRight="25dp"
+                android:textSize="17sp"
+
+                android:textColor="@color/common_google_signin_btn_text_dark_focused"
+                android:textAlignment="center"
+                />
+            <Button
+                android:textStyle="bold"
+                android:id="@+id/btn_Login_Phone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_Login_Phone"
+                android:padding="4dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="19dp"
+                android:layout_marginRight="19dp"
+                android:textSize="15sp"
+                android:textAllCaps="true"
+                android:text="Phone"
+                android:textAlignment="center"
+                android:background="@drawable/buttons"
+                android:textColor="@android:color/background_light"
+                android:drawableStart="@drawable/phone"
+                />
+
+        </RelativeLayout>
+
+
+    </ScrollView>
+</RelativeLayout>

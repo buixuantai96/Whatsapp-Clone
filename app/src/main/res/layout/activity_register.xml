@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".RegisterActivity">
+    <ImageView
+        android:id="@+id/signup_photo"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:scaleType="fitCenter"
+        android:src="@drawable/signup_photo" />
+
+    <EditText
+        android:id="@+id/edt_Register_Email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+
+        android:layout_below="@+id/signup_photo"
+        android:hint="Email............"
+        android:drawableStart="@drawable/email"
+        android:padding="4dp"
+        android:background="@drawable/inputs"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="17dp"
+        android:layout_marginRight="17dp"
+        android:textSize="19sp"
+        android:inputType="textEmailAddress"
+        />
+    <EditText
+        android:id="@+id/edt_Register_Password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:inputType="textPassword"
+        android:layout_below="@+id/edt_Register_Email"
+        android:hint="............."
+        android:drawableStart="@drawable/password"
+        android:padding="4dp"
+        android:background="@drawable/inputs"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="17dp"
+        android:layout_marginRight="17dp"
+        android:textSize="19sp"
+
+        />
+
+    <Button
+        android:id="@+id/btn_Create_Account"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/edt_Register_Password"
+        android:padding="4dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="19dp"
+        android:layout_marginRight="19dp"
+        android:textSize="24sp"
+
+        android:text="Create Account"
+        android:textStyle="bold"
+        android:textAlignment="center"
+        android:background="@drawable/buttons"
+        android:textColor="@android:color/background_light"
+
+        />
+    <TextView
+        android:id="@+id/tv_Have_Account"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/btn_Create_Account"
+        android:text="Already have an Account?"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
+        android:textSize="17sp"
+        android:textStyle="bold"
+        android:textColor="@color/common_google_signin_btn_text_dark_focused"
+        android:textAlignment="center"
+        />
+
+</RelativeLayout>

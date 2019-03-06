@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".PhoneLoginActivity">
+
+    <EditText
+        android:id="@+id/edt_phone_number"
+        android:inputType="phone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="190dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/inputs"
+        android:hint="Phone Number"
+        android:textAllCaps="false"
+        android:textSize="20sp"
+        android:drawableStart="@drawable/phone"
+        android:textAlignment="center"
+        />
+    <EditText
+        android:visibility="gone"
+        android:inputType="number"
+        android:id="@+id/edt_Verify_code"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/edt_phone_number"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/inputs"
+        android:hint="Verify Coder"
+        android:textAllCaps="false"
+        android:textSize="20sp"
+        android:drawableStart="@drawable/password"
+        android:textAlignment="center"
+        />
+    <Button
+        android:visibility="gone"
+        android:id="@+id/img_btn_vertify"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Vertify"
+        android:layout_below="@+id/edt_Verify_code"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:textAllCaps="true"
+        android:textStyle="bold"
+        android:textSize="22sp"
+        android:background="@drawable/buttons"
+        android:layout_marginTop="10dp"
+
+
+        />
+    <Button
+        android:id="@+id/img_btn_send_vertify_code"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="send Vertify code"
+        android:layout_below="@+id/img_btn_vertify"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:textAllCaps="true"
+        android:textStyle="bold"
+        android:textSize="22sp"
+        android:background="@drawable/buttons"
+        android:layout_marginTop="10dp"
+
+
+        />
+
+
+
+</RelativeLayout>

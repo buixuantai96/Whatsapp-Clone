@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".GroupChatActivity"
+
+    >
+
+    <include
+
+        android:id="@+id/group_chat_bar_layout"
+        layout="@layout/app_bar_layout"
+
+        ></include>
+
+    <ScrollView
+        android:id="@+id/scroll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/myLinearLayout"
+        android:layout_below="@id/group_chat_bar_layout"
+        android:layout_marginTop="-2dp"
+        android:layout_marginBottom="2dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_show_group_message"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="2dp"
+                android:layout_marginEnd="2dp"
+                android:layout_marginBottom="50dp"
+                android:padding="10dp"
+                android:textAllCaps="false"
+                android:textColor="@color/common_google_signin_btn_text_dark_focused"
+                android:textSize="20sp"
+
+                />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/myLinearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="4dp"
+        android:layout_marginBottom="4dp"
+        android:layout_marginEnd="8dp"
+        android:orientation="horizontal"
+        android:layout_marginHorizontal="4dp"
+        >
+
+        <EditText
+
+            android:id="@+id/edt_input_group_message"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:hint="Tell something...!"
+            android:lines="4"
+            android:minLines="1"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/img_btn_send_group_msg"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <ImageButton
+            android:id="@+id/img_btn_send_group_msg"
+            android:visibility="gone"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:nextFocusLeft="@id/edt_input_group_message"
+            android:src="@drawable/send_message"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/edt_input_group_message" />
+
+        <ImageButton
+            android:id="@+id/img_btn_send_group_voice"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:nextFocusLeft="@id/edt_input_group_message"
+            android:src="@drawable/rsz_1microphonegreen"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/edt_input_group_message" />
+
+    </android.support.constraint.ConstraintLayout>
+
+</RelativeLayout>
