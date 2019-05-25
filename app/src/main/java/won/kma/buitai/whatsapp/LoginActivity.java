@@ -17,23 +17,37 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
+
+import won.kma.buitai.whatsapp.helper.VirgilHelper;
 
 public class LoginActivity extends AppCompatActivity {
-    private FirebaseUser currentUser;
+
     private Button btnLogin, btnPhoneLogin;
     private EditText edtLoginEmail, edtLoginPassword;
     private TextView tvNewAccount, tvForgetPassword;
-    private FirebaseAuth firebaseAuth;
     private ProgressDialog loadingBar;
+
+    private FirebaseAuth firebaseAuth;
+    private FirebaseUser currentUser;
+    private DatabaseReference UserRef;
+
+    private VirgilHelper virgilHelper;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        firebaseAuth = FirebaseAuth.getInstance();
-        InitlizeFields();
 
+        firebaseAuth = FirebaseAuth.getInstance();
         currentUser = firebaseAuth.getCurrentUser();
+        UserRef = FirebaseDatabase.getInstance().getReference().child("Users");
+
+
+        InitlizeFields();
 
         tvNewAccount.setOnClickListener(new View.OnClickListener(){
 
@@ -86,9 +100,26 @@ public class LoginActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()){
-                                SendUserToMainActivity();
-                                Toast.makeText(LoginActivity.this, "Login...", Toast.LENGTH_SHORT).show();
-                                loadingBar.dismiss();
+
+                                //get TokenID of user's phone;
+//                                virgilHelper.eThree.register(onRegisterListener);
+
+                                String currentUserID = firebaseAuth.getCurrentUser().getUid();
+                                String deviceToken = FirebaseInstanceId.getInstance().getToken();
+
+                                UserRef.child(currentUserID).child("device_token")
+                                        .setValue(deviceToken)
+                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful()){
+                                            //after that allow user login;
+                                            SendUserToMainActivity();
+                                            Toast.makeText(LoginActivity.this, "Login...", Toast.LENGTH_SHORT).show();
+                                            loadingBar.dismiss();
+                                        }
+                                    }
+                                });
                             }
                             else{
                                 String Message = task.getException().toString();
@@ -100,6 +131,16 @@ public class LoginActivity extends AppCompatActivity {
 
         }
     }
+
+//    final EThree.OnCompleteListener onRegisterListener = new EThree.OnCompleteListener() {
+//        @Override public void onSuccess() {
+//            // User private key loaded, ready to end-to-end encrypt!
+//        }
+//
+//        @Override public void onError(@NotNull final Throwable throwable) {
+//            // Error handling
+//        }
+//    };
 
     private void InitlizeFields(){
         btnLogin = (Button)findViewById(R.id.btn_Login);
@@ -127,4 +168,5 @@ public class LoginActivity extends AppCompatActivity {
         Intent phoneLoginIntent = new Intent(LoginActivity.this, PhoneLoginActivity.class);
         startActivity(phoneLoginIntent);
     }
+
 }

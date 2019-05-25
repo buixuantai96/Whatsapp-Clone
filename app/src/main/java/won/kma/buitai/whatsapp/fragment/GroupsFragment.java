@@ -1,4 +1,4 @@
-package won.kma.buitai.whatsapp;
+package won.kma.buitai.whatsapp.fragment;
 
 
 import android.content.Intent;
@@ -22,6 +22,9 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+
+import won.kma.buitai.whatsapp.GroupChatActivity;
+import won.kma.buitai.whatsapp.R;
 
 
 /**

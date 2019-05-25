@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/img_message_profile"
+        android:layout_width="@dimen/circle_image_view"
+        android:layout_height="@dimen/circle_image_view"
+        android:src="@drawable/profile_image"
+        android:layout_marginTop="@dimen/margin_top"
+        
+        />
+    <TextView
+        android:id="@+id/tv_receiver_message_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="@dimen/margin_top"
+        android:layout_toEndOf="@+id/img_message_profile"
+        android:background="@drawable/receiver_message_layout"
+        android:hint="@string/display_receiver_message"
+        android:textSize="@dimen/text_size"
+        android:padding="@dimen/padding_message"
+        android:textStyle="bold"
+        android:textColor="@android:color/black"
+        />
+    <TextView
+        android:id="@+id/tv_sender_message_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="@+id/tv_receiver_message_text"
+        android:layout_marginTop="@dimen/margin_top"
+        android:layout_alignParentEnd="true"
+        android:background="@drawable/sender_message_layout"
+        android:hint="@string/display_sender_message"
+        android:textSize="@dimen/text_size"
+        android:padding="@dimen/padding_message"
+        android:textStyle="bold"
+        android:textColor="@android:color/black"
+        />
+
+
+</RelativeLayout>

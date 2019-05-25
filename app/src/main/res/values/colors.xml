@@ -3,4 +3,5 @@
     <color name="colorPrimary">#006257</color>
     <color name="colorPrimaryDark">#005048</color>
     <color name="colorAccent">#E6E6E6</color>
+    <color name="colorCancelChatReq">#f49842</color>
 </resources>

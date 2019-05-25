@@ -38,6 +38,8 @@ public class PhoneLoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_phone_login);
         InitializeFields();
 
+        firebaseAuth = FirebaseAuth.getInstance();
+
         buttonSendCode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

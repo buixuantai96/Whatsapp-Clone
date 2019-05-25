@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:orientation="horizontal">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/image_users_profile"
+            android:layout_alignParentTop="true"
+            android:layout_width="85dp"
+            android:layout_height="85dp"
+            android:src="@drawable/profile_image"
+            />
+
+        <LinearLayout
+            android:layout_margin="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:id="@+id/ln_username_profile"
+                >
+
+                <TextView
+                    android:id="@+id/tv_profile_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/user_name"
+                    android:textAlignment="textStart"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/image_online"
+                    android:layout_width="16dp"
+                    android:layout_height="24dp"
+                    android:layout_marginTop="3dp"
+                    android:layout_marginEnd="10dp"
+                    android:background="@drawable/online"
+                    android:visibility="invisible" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_profile_status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="textStart"
+                android:text="@string/user_status"
+                android:textSize="18sp"
+                />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                >
+                <Button
+                    android:id="@+id/btn_confirm_request"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/confirm_button"
+                    android:background="@drawable/buttons"
+                    android:hint="@string/confirm_request_message"
+                    android:visibility="invisible"
+                    />
+                <Button
+                    android:id="@+id/btn_delete_request"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/confirm_button"
+                    android:background="@drawable/buttons"
+                    android:hint="@string/delete_request_message"
+                    android:backgroundTint="@color/colorAccent"
+                    android:layout_marginStart="@dimen/margin_top"
+                    android:visibility="invisible"
+                    />
+
+            </LinearLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</RelativeLayout>

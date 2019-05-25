@@ -25,14 +25,21 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.HashMap;
+
+import won.kma.buitai.whatsapp.adapter.TabsAccesstorApdapter;
+
 public class MainActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private ViewPager viewPager;
     private TabLayout tabLayout;
     private TabsAccesstorApdapter tabsAccesstorApdapter;
-    private FirebaseUser currentUser;
+
+    private String currentUserID;
     private FirebaseAuth firebaseAuth;
-    private DatabaseReference RootReference;
+    private DatabaseReference RootRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,8 +47,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         firebaseAuth = FirebaseAuth.getInstance();
-        currentUser = firebaseAuth.getCurrentUser();
-        RootReference = FirebaseDatabase.getInstance().getReference("");
+
+        RootRef = FirebaseDatabase.getInstance().getReference("");
 
         toolbar = (Toolbar)findViewById(R.id.main_page_toolbar);
         setSupportActionBar(toolbar);
@@ -59,17 +66,38 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+
+        FirebaseUser currentUser = firebaseAuth.getCurrentUser();
         if (currentUser == null){
             SendUserToLoginActivity();
         }
         else{
+            UpdateUserStatus("online");
             VerifyUserExistance();
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        FirebaseUser currentUser = firebaseAuth.getCurrentUser();
+        if (currentUser != null){
+            UpdateUserStatus("offline");
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        FirebaseUser currentUser = firebaseAuth.getCurrentUser();
+        if (currentUser != null){
+            UpdateUserStatus("offline");
         }
     }
 
     private void VerifyUserExistance(){
         final String currentUserID = firebaseAuth.getCurrentUser().getUid();
-        RootReference.child("Users").child(currentUserID).addValueEventListener(new ValueEventListener() {
+        RootRef.child("Users").child(currentUserID).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.child("name").exists()){
@@ -100,6 +128,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         super.onOptionsItemSelected(item);
         if (item.getItemId()== R.id.main_Logout_opt){
+            UpdateUserStatus("offline");
             firebaseAuth.signOut();
             SendUserToLoginActivity();
         }
@@ -107,7 +136,7 @@ public class MainActivity extends AppCompatActivity {
             SendUsertoSettingsActivity();
         }
         if (item.getItemId()== R.id.main_find_Friends_opt){
-
+            SendUsertoFindFriendActivity();
         }
         if (item.getItemId()== R.id.main_create_Group_opt){
             RequestNewGroup();
@@ -146,7 +175,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void CreateNewGroup(final String groupName){
-        RootReference.child("Groups").child(groupName).setValue("")
+        RootRef.child("Groups").child(groupName).setValue("")
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
@@ -157,11 +186,31 @@ public class MainActivity extends AppCompatActivity {
                 });
 
     }
+
+    private void UpdateUserStatus(String state){
+        String saveCurrentTime, saveCurrentDate;
+
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat currentDate = new SimpleDateFormat("MMM dd, yyyy");
+        saveCurrentDate = currentDate.format(calendar.getTime());
+
+        SimpleDateFormat currentTime = new SimpleDateFormat("hh:mm a");
+        saveCurrentTime = currentTime.format(calendar.getTime());
+
+        HashMap <String, Object> onlineStateMap = new HashMap<>();
+        onlineStateMap.put("time", saveCurrentTime);
+        onlineStateMap.put("date", saveCurrentDate);
+        onlineStateMap.put("state", state);
+
+        currentUserID = firebaseAuth.getCurrentUser().getUid();
+        RootRef.child("Users").child(currentUserID)
+                .child("userState").updateChildren(onlineStateMap);
+
+    }
+
     private void SendUsertoSettingsActivity(){
         Intent settingsIntent = new Intent(MainActivity.this, SettingsActivity.class);
-        settingsIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(settingsIntent);
-        finish();
     }
     private void SendUserToLoginActivity(){
         Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
@@ -169,4 +218,10 @@ public class MainActivity extends AppCompatActivity {
         startActivity(loginIntent);
         finish();
     }
+
+    private void SendUsertoFindFriendActivity(){
+        Intent findFriendIntent = new Intent(MainActivity.this, FindFriendActivity.class);
+        startActivity(findFriendIntent);
+    }
+
 }
