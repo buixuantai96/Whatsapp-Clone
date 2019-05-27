@@ -21,8 +21,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.iid.FirebaseInstanceId;
 
-import won.kma.buitai.whatsapp.helper.VirgilHelper;
-
 public class LoginActivity extends AppCompatActivity {
 
     private Button btnLogin, btnPhoneLogin;
@@ -34,14 +32,12 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseUser currentUser;
     private DatabaseReference UserRef;
 
-    private VirgilHelper virgilHelper;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
         firebaseAuth = FirebaseAuth.getInstance();
         currentUser = firebaseAuth.getCurrentUser();
         UserRef = FirebaseDatabase.getInstance().getReference().child("Users");

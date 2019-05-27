@@ -41,33 +41,27 @@ public class ChatsFragment extends Fragment {
     private DatabaseReference ChatsRef, UserRef;
     private FirebaseAuth firebaseAuth;
 
-    private VirgilHelper virgilHelper = new VirgilHelper();
-
-
+    private VirgilHelper virgilHelper =  new VirgilHelper();
 
     public ChatsFragment() {
         // Required empty public constructor
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         firebaseAuth = FirebaseAuth.getInstance();
         currentUserID = firebaseAuth.getCurrentUser().getUid();
         ChatsRef = FirebaseDatabase.getInstance().getReference().child("Contacts").child(currentUserID);
         UserRef = FirebaseDatabase.getInstance().getReference().child("Users");
-
+//        virgilHelper = new VirgilHelper(getContext());
         // Inflate the layout for this fragment
         PrivateChatsView = inflater.inflate(R.layout.fragment_chats, container, false);
         chatsList = (RecyclerView)PrivateChatsView.findViewById(R.id.recycleview_chat_list);
         chatsList.setLayoutManager(new LinearLayoutManager(getContext()));
 
         return PrivateChatsView;
-
     }
-
 
     @Override
     public void onStart() {
@@ -91,13 +85,11 @@ public class ChatsFragment extends Fragment {
                                 Picasso.get().load(retrieveImage[0]).placeholder(R.drawable.profile_image)
                                         .into(holder.profileImage);
                             }
-
                             final String retrieveName = dataSnapshot.child("name").getValue().toString();
                             final String retrieveStatus = dataSnapshot.child("status").getValue().toString();
 
                             holder.userName.setText(retrieveName);
                             holder.userStatus.setText("Last seen: " + "\n" + "Date " + "Time");
-
                             //show last seen (state)
                             if (dataSnapshot.child("userState").hasChild("state")){
                                 String state = dataSnapshot.child("userState").child("state").getValue().toString();
@@ -108,13 +100,11 @@ public class ChatsFragment extends Fragment {
                                 }
                                 else if(state.equals("offline")){
                                     holder.userStatus.setText("Last seen: " + date + " " + time);
-
                                 }
                             }
                             else{
                                 holder.userStatus.setText("offline");
                             }
-
 
                             holder.itemView.setOnClickListener(new View.OnClickListener() {
                                 @Override

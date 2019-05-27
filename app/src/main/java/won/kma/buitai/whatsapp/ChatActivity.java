@@ -29,10 +29,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
-import com.virgilsecurity.android.ethree.kotlin.interaction.EThree;
-import com.virgilsecurity.sdk.crypto.PublicKey;
-
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -55,7 +51,7 @@ public class ChatActivity extends AppCompatActivity {
 
     private LinearLayoutManager linearLayoutManager;
     private MessageAdapter messageAdapter;
-    private final List<Messages> listMessage = new ArrayList<>();
+    private final List<Messages>listMessage = new ArrayList<>();
     private RecyclerView recyclerViewUserMessagesList;
 
 
@@ -108,21 +104,7 @@ public class ChatActivity extends AppCompatActivity {
         imageButtonSendTextMessage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                SendMessage();
-
-                //                final EThree.OnCompleteListener lookupPublicKey = new EThree.OnCompleteListener() {
-//                    @Override public void onSuccess() {
-//                        virgilHelper.eThree.lookupPublicKeys(Collections.singletonList(messageReceiverID), lookupKeysListener);
-//                    }
-//                    @Override public void onError(@NotNull final Throwable throwable) {
-//                        // Error handling
-//                        runOnUiThread(new Runnable() {
-//                            @Override public void run() {
-//                                Toast.makeText(ChatActivity.this, throwable.getMessage(), Toast.LENGTH_SHORT).show();
-//                            }
-//                        });
-//                    }
-//                };
+                SendMessage();
             }
         });
     }
@@ -138,6 +120,11 @@ public class ChatActivity extends AppCompatActivity {
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 Messages messages = dataSnapshot.getValue(Messages.class);//get data from Model;
 
+                String decryptmessage = messages.getMessage();
+
+                String decryptedText = virgilHelper.eThree.decrypt(decryptmessage, virgilHelper.decryptKey);
+
+                messages.setMessage(decryptedText);
                 listMessage.add(messages);
 
                 messageAdapter.notifyDataSetChanged();
@@ -168,93 +155,46 @@ public class ChatActivity extends AppCompatActivity {
         });
     }
 
-    public EThree.OnResultListener<Map<String, PublicKey>> lookupKeysListener =
-            new EThree.OnResultListener<Map<String, PublicKey>>() {
-                @Override public void onSuccess(Map<String, PublicKey> result) {
 
-                    String MessageText = editTextInputMessage.getText().toString();
 
-                    if (TextUtils.isEmpty(MessageText)){
-                        Toast.makeText(ChatActivity.this, "Please enter your Message!...", Toast.LENGTH_SHORT).show();
+    private void SendMessage(){
+        String MessageText = editTextInputMessage.getText().toString();
+        if (TextUtils.isEmpty(MessageText)){
+            Toast.makeText(ChatActivity.this, "Please enter your Message!...", Toast.LENGTH_SHORT).show();
+        }
+        else{
+            String messageSenderRef = "Messages/" + messageSenderID + "/" + messageReceiverID;
+            String messageReiciverRef = "Messages/" + messageReceiverID + "/" + messageSenderID;
+
+            DatabaseReference userMessageKeyRef = RootRef.child("Messages")
+                    .child(messageSenderID).child(messageReceiverID).push();
+            String messagePushID = userMessageKeyRef.getKey();
+
+            String encryptedText = virgilHelper.eThree.encrypt(MessageText, virgilHelper.listPublicKey);
+
+            Map mapMessageTextBody = new HashMap();
+
+            mapMessageTextBody.put("message", encryptedText);
+            mapMessageTextBody.put("type", "text");
+            mapMessageTextBody.put("from", messageSenderID);
+
+            Map messageBodyDetail = new HashMap();
+            messageBodyDetail.put(messageSenderRef + "/" + messagePushID, mapMessageTextBody);
+            messageBodyDetail.put(messageReiciverRef + "/" + messagePushID, mapMessageTextBody);
+
+            RootRef.updateChildren(messageBodyDetail).addOnCompleteListener(new OnCompleteListener() {
+                @Override
+                public void onComplete(@NonNull Task task) {
+                    if (task.isSuccessful()){
+                        Toast.makeText(ChatActivity.this, "Successfully", Toast.LENGTH_SHORT).show();
                     }
-                    else{
-                        String messageSenderRef = "Messages/" + messageSenderID + "/" + messageReceiverID;
-                        String messageReiciverRef = "Messages/" + messageReceiverID + "/" + messageSenderID;
-
-                        DatabaseReference userMessageKeyRef = RootRef.child("Messages")
-                                .child(messageSenderID).child(messageReceiverID).push();
-                        String messagePushID = userMessageKeyRef.getKey();
-
-                        String encryptedText = virgilHelper.eThree.encrypt(MessageText, new ArrayList<>(result.values()));
-
-
-                        Map mapMessageTextBody = new HashMap();
-
-                        mapMessageTextBody.put("message", encryptedText);
-                        mapMessageTextBody.put("type", "text");
-                        mapMessageTextBody.put("from", messageSenderID);
-
-                        Map messageBodyDetail = new HashMap();
-                        messageBodyDetail.put(messageSenderRef + "/" + messagePushID, mapMessageTextBody);
-                        messageBodyDetail.put(messageReiciverRef + "/" + messagePushID, mapMessageTextBody);
-
-                        RootRef.updateChildren(messageBodyDetail).addOnCompleteListener(new OnCompleteListener() {
-                            @Override
-                            public void onComplete(@NonNull Task task) {
-                                if (task.isSuccessful()){
-                                    Toast.makeText(ChatActivity.this, "Successfully", Toast.LENGTH_SHORT).show();
-                                }
-                                editTextInputMessage.setText("");
-                            }
-                        });
-                    }
-
+                    editTextInputMessage.setText("");
                 }
-                @Override public void onError(@NotNull Throwable throwable) {
+            });
+        }
 
-                }
-            };
+    }
 
-
-
-//    private void SendMessage(){
-//        String MessageText = editTextInputMessage.getText().toString();
-//        if (TextUtils.isEmpty(MessageText)){
-//            Toast.makeText(ChatActivity.this, "Please enter your Message!...", Toast.LENGTH_SHORT).show();
-//        }
-//        else{
-//            String messageSenderRef = "Messages/" + messageSenderID + "/" + messageReceiverID;
-//            String messageReiciverRef = "Messages/" + messageReceiverID + "/" + messageSenderID;
-//
-//            DatabaseReference userMessageKeyRef = RootRef.child("Messages")
-//                    .child(messageSenderID).child(messageReceiverID).push();
-//            String messagePushID = userMessageKeyRef.getKey();
-//
-//            String encryptedText = virgilHelper.eThree.encrypt(MessageText, );
-//
-//            Map mapMessageTextBody = new HashMap();
-//
-//            mapMessageTextBody.put("message", encryptedText);
-//            mapMessageTextBody.put("type", "text");
-//            mapMessageTextBody.put("from", messageSenderID);
-//
-//            Map messageBodyDetail = new HashMap();
-//            messageBodyDetail.put(messageSenderRef + "/" + messagePushID, mapMessageTextBody);
-//            messageBodyDetail.put(messageReiciverRef + "/" + messagePushID, mapMessageTextBody);
-//
-//            RootRef.updateChildren(messageBodyDetail).addOnCompleteListener(new OnCompleteListener() {
-//                @Override
-//                public void onComplete(@NonNull Task task) {
-//                    if (task.isSuccessful()){
-//                        Toast.makeText(ChatActivity.this, "Successfully", Toast.LENGTH_SHORT).show();
-//                    }
-//                    editTextInputMessage.setText("");
-//                }
-//            });
-//        }
-
-//    }
-//
     private void DisplayUserLastSeen(){
         RootRef.child("Users").child(messageSenderID).addValueEventListener(new ValueEventListener() {
             @Override
@@ -299,10 +239,8 @@ public class ChatActivity extends AppCompatActivity {
         messageAdapter = new MessageAdapter(listMessage);
         recyclerViewUserMessagesList = (RecyclerView)findViewById(R.id.recycleview_message_list_of_users);
         linearLayoutManager = new LinearLayoutManager(this);
-
         recyclerViewUserMessagesList.setLayoutManager(linearLayoutManager);
         recyclerViewUserMessagesList.setAdapter(messageAdapter);
-
 
         setSupportActionBar(chatToolbar);
         ActionBar actionBar = getSupportActionBar();
@@ -313,6 +251,5 @@ public class ChatActivity extends AppCompatActivity {
         LayoutInflater layoutInflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View actionbarView = layoutInflater.inflate(R.layout.custom_chat_bar, null);
         actionBar.setCustomView(actionbarView);
-
     }
 }

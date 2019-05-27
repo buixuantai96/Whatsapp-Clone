@@ -25,19 +25,15 @@ import java.util.Collections;
 import java.util.Map;
 
 public class VirgilHelper {
-    private static VirgilHelper virgilHelperInstance = new VirgilHelper();
-    private EThree.OnCompleteListener listener;
+
     String authToken;
-    public EThree eThree;
+    String identity;
+    public static EThree eThree;
+    public ArrayList<PublicKey> listPublicKey;
 
-    static ArrayList<PublicKey> listPublicKey;
+    public PublicKey decryptKey;
 
-    public VirgilHelper(){
-    };
-
-    public static VirgilHelper getInstance(){
-        return virgilHelperInstance;
-    }
+    public VirgilHelper(){}
 
     final EThree.OnGetTokenCallback onGetTokenCallback = new EThree.OnGetTokenCallback() {
         @NotNull
@@ -49,7 +45,7 @@ public class VirgilHelper {
     final EThree.OnResultListener<EThree> onInitListener = new EThree.OnResultListener<EThree>() {
         @Override public void onSuccess(EThree result) {
             eThree = result;
-            eThree.register(listener);
+            eThree.register(onRegisterListener);
         }
         @Override public void onError(@NotNull final Throwable throwable) {
             // Error handling
@@ -57,6 +53,10 @@ public class VirgilHelper {
     };
 
     public void findPublicKey(String identity){
+        this.identity = identity;
+        if (eThree == null) {
+            return;
+        }
         eThree.lookupPublicKeys(Collections.singletonList(identity), lookupKeysListener);
     }
 
@@ -64,17 +64,16 @@ public class VirgilHelper {
             new EThree.OnResultListener<Map<String, PublicKey>>() {
                 @Override public void onSuccess(Map<String, PublicKey> result) {
                     listPublicKey = new ArrayList<>(result.values());
+                    decryptKey = result.get(identity);
                 }
-
                 @Override public void onError(@NotNull Throwable throwable) {
                 }
             };
 
-    public void initUser(String email, String password, final Context context, final EThree.OnCompleteListener onRegisterListener) {
+    public void initUser(String email, String password, final Context context) {
         authenticate(email, password, new OnResultListener<String>() {
             @Override public void onSuccess(String value) {
                 authToken = value;
-                listener = onRegisterListener;
                 EThree.initialize(context,
                         onGetTokenCallback,
                         onInitListener);
@@ -110,6 +109,17 @@ public class VirgilHelper {
         });
     }
 
+    final EThree.OnCompleteListener onRegisterListener = new EThree.OnCompleteListener() {
+        @Override
+        public void onSuccess() {
+            // User private key loaded, ready to end-to-end encrypt!
+        }
+
+        @Override
+        public void onError(@NotNull final Throwable throwable) {
+            // Error handling
+        }
+    };
 
     String getVirgilJwt(String authToken) {
         try {
