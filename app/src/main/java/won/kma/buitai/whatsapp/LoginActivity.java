@@ -21,6 +21,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.iid.FirebaseInstanceId;
 
+import won.kma.buitai.whatsapp.helper.VirgilHelper;
+
 public class LoginActivity extends AppCompatActivity {
 
     private Button btnLogin, btnPhoneLogin;
@@ -32,7 +34,7 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseUser currentUser;
     private DatabaseReference UserRef;
 
-
+    VirgilHelper virgilHelper = new VirgilHelper();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,8 +82,8 @@ public class LoginActivity extends AppCompatActivity {
         loadingBar.setMessage("Please wait a second...!");
         loadingBar.setCanceledOnTouchOutside(true);
         loadingBar.show();
-        String Email = edtLoginEmail.getText().toString();
-        String Password = edtLoginPassword.getText().toString();
+        final String Email = edtLoginEmail.getText().toString();
+        final String Password = edtLoginPassword.getText().toString();
         if (TextUtils.isEmpty(Email)){
             Toast.makeText(this , "Please Enter your Email!", Toast.LENGTH_SHORT).show();
             loadingBar.dismiss();
@@ -97,8 +99,7 @@ public class LoginActivity extends AppCompatActivity {
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()){
 
-                                //get TokenID of user's phone;
-//                                virgilHelper.eThree.register(onRegisterListener);
+                                virgilHelper.initUser(Email, Password, LoginActivity.this);
 
                                 String currentUserID = firebaseAuth.getCurrentUser().getUid();
                                 String deviceToken = FirebaseInstanceId.getInstance().getToken();
