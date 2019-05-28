@@ -30,12 +30,15 @@ import java.util.Calendar;
 import java.util.HashMap;
 
 import won.kma.buitai.whatsapp.adapter.TabsAccesstorApdapter;
+import won.kma.buitai.whatsapp.helper.VirgilHelper;
 
 public class MainActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private ViewPager viewPager;
     private TabLayout tabLayout;
     private TabsAccesstorApdapter tabsAccesstorApdapter;
+
+    public VirgilHelper virgilHelper = new VirgilHelper();
 
     private String currentUserID;
     private FirebaseAuth firebaseAuth;
@@ -66,12 +69,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-
         FirebaseUser currentUser = firebaseAuth.getCurrentUser();
         if (currentUser == null){
             SendUserToLoginActivity();
         }
         else{
+            virgilHelper.initUser(MainActivity.this);
             UpdateUserStatus("online");
             VerifyUserExistance();
         }
@@ -130,6 +133,7 @@ public class MainActivity extends AppCompatActivity {
         if (item.getItemId()== R.id.main_Logout_opt){
             UpdateUserStatus("offline");
             firebaseAuth.signOut();
+            virgilHelper.eThree = null;
             SendUserToLoginActivity();
         }
         if (item.getItemId()== R.id.main_Settings_opt){

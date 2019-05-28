@@ -99,7 +99,7 @@ public class LoginActivity extends AppCompatActivity {
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()){
 
-                                virgilHelper.initUser(Email, Password, LoginActivity.this);
+                                virgilHelper.initUser(LoginActivity.this);
 
                                 String currentUserID = firebaseAuth.getCurrentUser().getUid();
                                 String deviceToken = FirebaseInstanceId.getInstance().getToken();
