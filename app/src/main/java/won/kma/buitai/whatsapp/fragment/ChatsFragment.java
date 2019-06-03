@@ -43,10 +43,6 @@ public class ChatsFragment extends Fragment {
 
     private VirgilHelper virgilHelper =  new VirgilHelper();
 
-    public ChatsFragment() {
-        // Required empty public constructor
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -54,8 +50,7 @@ public class ChatsFragment extends Fragment {
         currentUserID = firebaseAuth.getCurrentUser().getUid();
         ChatsRef = FirebaseDatabase.getInstance().getReference().child("Contacts").child(currentUserID);
         UserRef = FirebaseDatabase.getInstance().getReference().child("Users");
-//        virgilHelper = new VirgilHelper(getContext());
-        // Inflate the layout for this fragment
+
         PrivateChatsView = inflater.inflate(R.layout.fragment_chats, container, false);
         chatsList = (RecyclerView)PrivateChatsView.findViewById(R.id.recycleview_chat_list);
         chatsList.setLayoutManager(new LinearLayoutManager(getContext()));

@@ -33,7 +33,6 @@ public class VirgilHelper {
 
     public PublicKey decryptKey;
 
-    public VirgilHelper(){}
 
     final EThree.OnGetTokenCallback onGetTokenCallback = new EThree.OnGetTokenCallback() {
         @NotNull
@@ -51,6 +50,10 @@ public class VirgilHelper {
             // Error handling
         }
     };
+
+    public void Logout(){
+        eThree = null;
+    }
 
     public void findPublicKey(String identity){
         this.identity = identity;

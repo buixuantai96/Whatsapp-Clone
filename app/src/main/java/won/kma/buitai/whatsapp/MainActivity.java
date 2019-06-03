@@ -133,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
         if (item.getItemId()== R.id.main_Logout_opt){
             UpdateUserStatus("offline");
             firebaseAuth.signOut();
-            virgilHelper.eThree = null;
+            virgilHelper.Logout();
             SendUserToLoginActivity();
         }
         if (item.getItemId()== R.id.main_Settings_opt){
