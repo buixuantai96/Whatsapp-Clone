@@ -99,7 +99,7 @@ public class LoginActivity extends AppCompatActivity {
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()){
 
-                                virgilHelper.initUser(LoginActivity.this);
+                                virgilHelper.initUser(LoginActivity.this, Email, Password);
 
                                 String currentUserID = firebaseAuth.getCurrentUser().getUid();
                                 String deviceToken = FirebaseInstanceId.getInstance().getToken();
@@ -129,15 +129,6 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-//    final EThree.OnCompleteListener onRegisterListener = new EThree.OnCompleteListener() {
-//        @Override public void onSuccess() {
-//            // User private key loaded, ready to end-to-end encrypt!
-//        }
-//
-//        @Override public void onError(@NotNull final Throwable throwable) {
-//            // Error handling
-//        }
-//    };
 
     private void InitlizeFields(){
         btnLogin = (Button)findViewById(R.id.btn_Login);

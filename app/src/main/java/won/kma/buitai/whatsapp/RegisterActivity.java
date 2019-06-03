@@ -92,7 +92,7 @@ public class RegisterActivity extends AppCompatActivity {
                                 //get Uid and token phoneID was registed from users;
                                 String deviceToken = FirebaseInstanceId.getInstance().getToken();
                                 String currentUserID = firebaseAuth.getUid();
-                                virgilHelper.initUser( RegisterActivity.this);
+                                virgilHelper.initUser( RegisterActivity.this, Email, Password);
 
                                 RootRef.child("Users").child(currentUserID).setValue("");
                                 RootRef.child("Users").child(currentUserID).child("device_token").setValue(deviceToken);

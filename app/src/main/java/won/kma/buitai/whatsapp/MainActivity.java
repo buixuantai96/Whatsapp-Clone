@@ -74,7 +74,6 @@ public class MainActivity extends AppCompatActivity {
             SendUserToLoginActivity();
         }
         else{
-            virgilHelper.initUser(MainActivity.this);
             UpdateUserStatus("online");
             VerifyUserExistance();
         }

@@ -73,8 +73,8 @@ public class VirgilHelper {
                 }
             };
 
-    public void initUser(final Context context) {
-        authenticate(new OnResultListener<String>() {
+    public void initUser(final Context context, String email, String password) {
+        authenticate(email, password, new OnResultListener<String>() {
             @Override public void onSuccess(String value) {
                 authToken = value;
                 EThree.initialize(context,
@@ -89,7 +89,8 @@ public class VirgilHelper {
     }
 
 
-    void authenticate(
+    void authenticate(final String identity,
+                      String password,
                       final OnResultListener<String> onResultListener) {
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
         firebaseAuth.addAuthStateListener(new FirebaseAuth.AuthStateListener() {
