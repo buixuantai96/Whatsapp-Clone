@@ -29,9 +29,9 @@ public class VirgilHelper {
     String authToken;
     String identity;
     public static EThree eThree;
-    public ArrayList<PublicKey> listPublicKey;
+    public static ArrayList<PublicKey> listPublicKey;
 
-    public PublicKey decryptKey;
+    public static PublicKey decryptKey;
 
 
     final EThree.OnGetTokenCallback onGetTokenCallback = new EThree.OnGetTokenCallback() {
