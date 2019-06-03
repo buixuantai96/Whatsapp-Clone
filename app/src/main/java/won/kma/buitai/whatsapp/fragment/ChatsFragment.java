@@ -107,6 +107,11 @@ public class ChatsFragment extends Fragment {
 
                                     virgilHelper.findPublicKey(usersID);
 
+                                    try {
+                                        Thread.sleep(100);
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    }
                                     Intent chatIntent = new Intent(getContext(), ChatActivity.class);
                                     chatIntent.putExtra("visitorUserID", usersID);
                                     chatIntent.putExtra("visitorUserName", retrieveName);
