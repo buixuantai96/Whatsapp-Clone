@@ -121,7 +121,6 @@ public class ChatActivity extends AppCompatActivity {
                 Messages messages = dataSnapshot.getValue(Messages.class);//get data from Model;
 
                 String decryptmessage = messages.getMessage();
-
                 String decryptedText = virgilHelper.eThree.decrypt(decryptmessage, virgilHelper.decryptKey);
 
                 messages.setMessage(decryptedText);

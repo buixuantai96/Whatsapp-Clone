@@ -18,9 +18,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.annotations.NotNull;
 import com.google.firebase.iid.FirebaseInstanceId;
-import com.virgilsecurity.android.ethree.kotlin.interaction.EThree;
 
 import won.kma.buitai.whatsapp.helper.VirgilHelper;
 
@@ -70,7 +68,6 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void RegisterAccount() {
-
         // textUtils always return true even String= null or String.lenght() = 0;
         if (TextUtils.isEmpty(Email)) {
             Toast.makeText(this, "Please Enter Your Email...", Toast.LENGTH_SHORT).show();
@@ -92,6 +89,7 @@ public class RegisterActivity extends AppCompatActivity {
                                 //get Uid and token phoneID was registed from users;
                                 String deviceToken = FirebaseInstanceId.getInstance().getToken();
                                 String currentUserID = firebaseAuth.getUid();
+
                                 virgilHelper.initUser( RegisterActivity.this, Email, Password);
 
                                 RootRef.child("Users").child(currentUserID).setValue("");
@@ -129,18 +127,5 @@ public class RegisterActivity extends AppCompatActivity {
         startActivity(mainIntent);
         finish();
     }
-
-    final EThree.OnCompleteListener onRegisterListener = new EThree.OnCompleteListener() {
-        @Override
-        public void onSuccess() {
-            // User private key loaded, ready to end-to-end encrypt!
-        }
-
-        @Override
-        public void onError(@NotNull final Throwable throwable) {
-            // Error handling
-        }
-    };
-
 
 }

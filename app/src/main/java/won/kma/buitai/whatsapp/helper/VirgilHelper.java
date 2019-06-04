@@ -2,6 +2,7 @@ package won.kma.buitai.whatsapp.helper;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -10,7 +11,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GetTokenResult;
 import com.google.firebase.database.annotations.NotNull;
 import com.virgilsecurity.android.ethree.kotlin.interaction.EThree;
-import com.virgilsecurity.sdk.crypto.PublicKey;
+import com.virgilsecurity.sdk.crypto.VirgilPublicKey;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -29,9 +30,10 @@ public class VirgilHelper {
     String authToken;
     String identity;
     public static EThree eThree;
-    public static ArrayList<PublicKey> listPublicKey;
 
-    public static PublicKey decryptKey;
+    public static ArrayList<VirgilPublicKey> listPublicKey;
+
+    public static VirgilPublicKey decryptKey;
 
 
     final EThree.OnGetTokenCallback onGetTokenCallback = new EThree.OnGetTokenCallback() {
@@ -63,9 +65,9 @@ public class VirgilHelper {
         eThree.lookupPublicKeys(Collections.singletonList(identity), lookupKeysListener);
     }
 
-    final EThree.OnResultListener<Map<String, PublicKey>> lookupKeysListener =
-            new EThree.OnResultListener<Map<String, PublicKey>>() {
-                @Override public void onSuccess(Map<String, PublicKey> result) {
+    final EThree.OnResultListener<Map<String, VirgilPublicKey>> lookupKeysListener =
+            new EThree.OnResultListener<Map<String, VirgilPublicKey>>() {
+                @Override public void onSuccess(Map<String, VirgilPublicKey> result) {
                     listPublicKey = new ArrayList<>(result.values());
                     decryptKey = result.get(identity);
                 }
@@ -75,6 +77,8 @@ public class VirgilHelper {
 
     public void initUser(final Context context, String email, String password) {
         authenticate(email, password, new OnResultListener<String>() {
+
+
             @Override public void onSuccess(String value) {
                 authToken = value;
                 EThree.initialize(context,
@@ -88,10 +92,10 @@ public class VirgilHelper {
         });
     }
 
-
-    void authenticate(final String identity,
+    private void authenticate(final String identity,
                       String password,
-                      final OnResultListener<String> onResultListener) {
+                      final OnResultListener<String> onResultListener
+                      ) {
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
         firebaseAuth.addAuthStateListener(new FirebaseAuth.AuthStateListener() {
             @Override public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -112,19 +116,9 @@ public class VirgilHelper {
         });
     }
 
-    final EThree.OnCompleteListener onRegisterListener = new EThree.OnCompleteListener() {
-        @Override
-        public void onSuccess() {
-            // User private key loaded, ready to end-to-end encrypt!
-        }
 
-        @Override
-        public void onError(@NotNull final Throwable throwable) {
-            // Error handling
-        }
-    };
 
-    String getVirgilJwt(String authToken) {
+    private static String getVirgilJwt(String authToken) {
         try {
             String url = "https://us-central1-whatsapp-5243a.cloudfunctions.net/api/virgil-jwt";
             URL object = new URL(url);
@@ -155,6 +149,17 @@ public class VirgilHelper {
             throw new RuntimeException("Parsing virgil jwt json error");
         }
     }
+
+    final EThree.OnCompleteListener onRegisterListener = new EThree.OnCompleteListener() {
+        @Override
+        public void onSuccess() {
+            Log.e("Success","Loaded private key is success");
+        }
+        @Override
+        public void onError(@NotNull final Throwable throwable) {
+            Log.e("Error","Loaded private key is fail");
+        }
+    };
 
     private interface OnResultListener<T> {
 

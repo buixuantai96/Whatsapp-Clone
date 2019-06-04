@@ -74,7 +74,6 @@ public class LoginActivity extends AppCompatActivity {
         if (currentUser != null){
             SendUserToMainActivity();
         }
-
     }
 
     private void AllowUsersLogin(){
@@ -128,7 +127,6 @@ public class LoginActivity extends AppCompatActivity {
 
         }
     }
-
 
     private void InitlizeFields(){
         btnLogin = (Button)findViewById(R.id.btn_Login);
